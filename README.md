@@ -15,7 +15,7 @@ Building calm AI tools for real life.<br>
 - 比起先谈 AI，更在意问题本身。
 - 好的工具应该贴近日常，而不是制造新的负担。
 - 比起短暂的新鲜感，更看重长期可用。
-- 产品和工程，对我来说是一体的。
+- 产品和工程，是一体的。
 
 ## Selected Work
 
