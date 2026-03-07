@@ -1,0 +1,55 @@
+name: Update GitHub heatmap
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "10 1 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-readme-heatmap
+  cancel-in-progress: true
+
+jobs:
+  update-heatmap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Generate heatmap SVG
+        env:
+          GH_STATS_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          uv run python scripts/generate_github_heatmap.py \
+            --username axin7 \
+            --output assets/heatmap.svg
+
+      - name: Validate generated SVG
+        run: |
+          test -s assets/heatmap.svg
+          grep -q "<svg" assets/heatmap.svg
+
+      - name: Commit updated heatmap
+        run: |
+          if git diff --quiet -- assets/heatmap.svg; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/heatmap.svg
+          git commit -m "chore: update github contribution heatmap"
+          git push
