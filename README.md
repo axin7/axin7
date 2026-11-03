@@ -19,7 +19,6 @@ Building calm AI tools for real life.<br>
 
 ## Selected Work
 
-- [fengxin.me](https://fengxin.me) — 一些在做的事，也写一些长期想法
 - [Anyveo](https://anyveo.com) — 做 AI 产品和工具的主要入口
 
 ## Activity
